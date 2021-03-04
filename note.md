@@ -2,3 +2,4 @@
 2. 在项目开发中，要使用分支来开发新功能，确保代码不会出现毁灭性错误。
    1. git checkout -b xxxx 创建新的分支
    2. git branch 查看所有分支
+   3. git checkout xxxx 切换到对应的分支
