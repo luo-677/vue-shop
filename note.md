@@ -3,3 +3,7 @@
    1. git checkout -b xxxx 创建新的分支
    2. git branch 查看所有分支
    3. git checkout xxxx 切换到对应的分支
+3. vue中使用async+await出现的问题及解决方案
+   1. npm i babel-plugin-transform-runtime --save-dev
+   2. npm i babel-runtime --save
+   3. "plugins":["@babel/plugin-transform-runtime"]
