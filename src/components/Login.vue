@@ -45,74 +45,78 @@
 
 <script>
 export default {
-  name: "Login",
+  name: 'Login',
   data() {
     return {
       loginForm: {
-        username: "",
-        password: "",
+        username: 'admin',
+        password: '123456'
       },
       // 2. 在data中定义规则信息
       loginFormRules: {
         // 验证用户名是否合法
         username: [
           // 3. 详细规则信息
-          { required: true, message: "请输入用户名", trigger: "blur" },
+          { required: true, message: '请输入用户名', trigger: 'blur' },
           {
             min: 3,
             max: 10,
-            message: "长度在 3 到 10 个字符",
-            trigger: "blur",
-          },
+            message: '长度在 3 到 10 个字符',
+            trigger: 'blur'
+          }
         ],
         // 验证密码是否合法
         password: [
-          { required: true, message: "请输入密码", trigger: "blur" },
+          { required: true, message: '请输入密码', trigger: 'blur' },
           {
             min: 6,
             max: 15,
-            message: "长度在 6 到 15 个字符",
-            trigger: "blur",
-          },
-        ],
-      },
-    };
+            message: '长度在 6 到 15 个字符',
+            trigger: 'blur'
+          }
+        ]
+      }
+    }
   },
   methods: {
     resetLoginForm() {
-      this.$refs.loginFormRef.resetFields();
+      this.$refs.loginFormRef.resetFields()
     },
     login_message({ type, message }) {
       this.$message({
         message: message,
         type: type,
-        center: true,
-      });
+        center: true
+      })
     },
     login() {
-      this.$refs.loginFormRef.validate(async (valid) => {
-        if (!valid) return;
+      this.$refs.loginFormRef.validate(async valid => {
+        if (!valid) return
         // (await this.$http.post('login',this.loginForm)) 会报错
         await this.$http
-          .post("login", this.loginForm)
-          .then((res) => {
+          .post('login', this.loginForm)
+          .then(res => {
             // console.log(res);
-            if (res.data.meta.status == 200) {
+            if (res.data.meta.status === 200) {
               this.login_message({
-                type: "success",
-                message: "恭喜你，登录成功",
-              });
+                type: 'success',
+                message: '恭喜你，登录成功'
+              })
+              window.sessionStorage.setItem('token', res.data.data.token)
+              setTimeout(() => {
+                this.$router.push('/home')
+              }, 1000)
             } else {
-              this.login_message({ type: "error", message: res.data.meta.msg });
+              this.login_message({ type: 'error', message: res.data.meta.msg })
             }
           })
-          .catch((err) => {
-            console.log(err);
-          });
-      });
-    },
-  },
-};
+          .catch(err => {
+            console.log(err)
+          })
+      })
+    }
+  }
+}
 </script>
 
 //

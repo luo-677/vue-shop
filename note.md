@@ -7,3 +7,7 @@
    1. npm i babel-plugin-transform-runtime --save-dev
    2. npm i babel-runtime --save
    3. "plugins":["@babel/plugin-transform-runtime"]
+4. 配置格式化工具
+   1. .prettierrc文件，新增引号和分号规则
+   2. .eslintrc.js文件，修改空格规则
+   3. 使用 yarn lint --fix 进行自动修复错误
