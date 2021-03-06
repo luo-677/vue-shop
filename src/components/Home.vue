@@ -6,7 +6,7 @@
     <!-- 页面主体区域 -->
     <el-container>
       <!-- 页面侧边栏 -->
-      <asides></asides>
+      <asides :amenuList="menuList"></asides>
       <!-- 页面主体区域 -->
       <mains></mains>
     </el-container>
@@ -18,11 +18,36 @@ import Asides from './common/Asides'
 import Mains from './common/Mains'
 export default {
   name: 'Home',
+  data() {
+    return {
+      menuList: [],
+    }
+  },
   components: {
     Headers,
     Asides,
     Mains
-  }
+  },
+  created() {
+    this.getMenuList();
+  },
+  methods: {
+    // 获取所有的菜单
+    async getMenuList(){
+      await this.$http.get('menus')
+      .then(res => {
+        // console.log(res.data)
+        if(res.data.meta.status !== 200){
+          return this.$message.err(res.data.meta.msg);
+        }
+        this.menuList = res.data.data;
+        console.log(this.menuList);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    }
+  },
 }
 </script>
 <style lang="scss" scoped>
