@@ -27,7 +27,9 @@ import {
   TableColumn,
   Switch,
   Tooltip,
-  Pagination
+  Pagination,
+  Dialog,
+  MessageBox
 } from 'element-ui'
 
 import axios from 'axios'
@@ -42,6 +44,7 @@ axios.interceptors.request.use(config => {
 Vue.prototype.$http = axios
 
 Vue.prototype.$message = Message
+Vue.prototype.$confirm = MessageBox.confirm
 
 Vue.config.productionTip = false
 // 组件注册需要分开写
@@ -66,6 +69,9 @@ Vue.use(TableColumn)
 Vue.use(Switch)
 Vue.use(Tooltip)
 Vue.use(Pagination)
+Vue.use(Dialog)
+// 这玩意不需要使用use函数进行激活
+// Vue.use(MessageBox)
 
 new Vue({
   router,
