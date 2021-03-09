@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- 将面包屑作为一个单独的组件使用插槽进行插入 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>用户管理</el-breadcrumb-item>
@@ -79,11 +80,11 @@
             <el-tooltip
               class="item"
               effect="dark"
-              content="编辑用户"
+              content="分配角色"
               placement="top"
               :enterable="false"
             >
-              <el-button type="warning" icon="el-icon-setting"></el-button>
+              <el-button type="warning" icon="el-icon-setting" @click="setRole(scope.row)"></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -168,6 +169,34 @@
           <el-button type="primary" @click="editUserInfo">确 定</el-button>
         </span>
       </el-dialog>
+
+      <!-- 分配角色 -->
+      <el-dialog
+        title="提示"
+        :visible.sync="setRoleDialogVisible"
+        width="50%"
+        @close="selectedRoleId=''">
+        <div>
+          <p>当前的用户：{{userInfo.username}}</p>
+          <p>当前的角色：{{userInfo.role_name}}</p>
+          <p>分配新角色：
+            <template>
+              <el-select v-model="selectedRoleId" clearable placeholder="请选择">
+                <el-option
+                  v-for="item in rolesList"
+                  :key="item.id"
+                  :label="item.roleName"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </template>
+          </p>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="setRoleDialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="saveRoleInfo">确 定</el-button>
+        </span>
+      </el-dialog>
     </el-card>
   </div>
 </template>
@@ -178,6 +207,7 @@
 export default {
   name: 'Users',
   data() {
+    // 自定义正则表达式验证
     let checkEmail = (rule, value, callback) => {
       // 验证邮箱的正则表达式
       const regEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -188,6 +218,7 @@ export default {
       callback(new Error('请输入合法邮箱'))
     }
 
+    // 自定义正则表达式验证
     let checkMobile = (rule, value, callback) => {
       const regMobile = /^(?:(?:\+|00)86)?1[3-9]\d{9}$/
       if (regMobile.test(value)) {
@@ -203,7 +234,7 @@ export default {
         // 当前页数
         pagenum: 1,
         // 当前每页显示多少条数据
-        pagesize: 2
+        pagesize: 5
       },
       userList: [],
       total: 0,
@@ -270,7 +301,13 @@ export default {
         ]
       },
       // 用于存储获取到的表单信息
-      editForm: {}
+      editForm: {},
+      // 用于控制角色分配的提示框显影
+      setRoleDialogVisible: false,
+      // 需要被分配角色的用户信息
+      userInfo: {},
+      rolesList: [],
+      selectedRoleId: '',
     }
   },
   created() {
@@ -410,6 +447,38 @@ export default {
           this.$message.info('已取消删除')
         })
       console.log(res)
+    },
+    async setRole(userInfo){
+      this.userInfo = userInfo
+      // 在展示对话框之前，获取所有角色的列表
+      await this.$http.get('roles')
+      .then(res => {
+        if(res.data.meta.status !== 200){
+          return this.$message.error(`角色信息获取失败，${res.data.meta.msg}`)
+        }
+        // 将角色列表数据保存到本地
+        this.rolesList = res.data.data;
+      })
+      this.setRoleDialogVisible = true
+    },
+    async saveRoleInfo(){
+      if(!this.selectedRoleId){
+        return this.$message.error('请选择要分配的角色！')
+      }
+      await this.$http.put(`users/${this.userInfo.id}/role`,{
+        rid: this.selectedRoleId
+      })
+      .then(res => {
+        if(res.data.meta.status !== 200){
+          return this.$message.error(`角色分配失败，${res.data.meta.msg}`)
+        }
+        this.$message.success(res.data.meta.msg)
+        this.getUserList()
+        this.setRoleDialogVisible = false
+      })
+      .catch(err => {
+        return this.$message.error(err.data.meta.msg)
+      })
     }
   }
 }

@@ -4,11 +4,11 @@
     <!-- 头部区域 -->
     <headers></headers>
     <!-- 页面主体区域 -->
-    <el-container>
+    <el-container class="mains-container">
       <!-- 页面侧边栏 -->
       <asides :amenuList="menuList"></asides>
       <!-- 页面主体区域 -->
-      <mains></mains>
+      <mains class="mains"></mains>
     </el-container>
   </el-container>
 </template>
@@ -53,5 +53,8 @@ export default {
 <style lang="scss" scoped>
 .home_container {
   height: 100%;
+}
+.mains-container{
+  overflow: hidden;
 }
 </style>

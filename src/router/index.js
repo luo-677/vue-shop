@@ -4,9 +4,12 @@ import Login from '../components/Login'
 import Home from '../components/Home'
 import Welcome from '../components/common/main/welcome'
 import Users from '../components/common/main/users'
+import Rights from '../components/common/main/rights'
+import Roles from '../components/common/main/Roles'
 
 Vue.use(VueRouter)
 
+// 优化时使用路由的懒加载
 const routes = [
   {
     path: '/',
@@ -27,10 +30,18 @@ const routes = [
       },
       {
         path: '/users',
-        component: Users,
-      }
+        component: Users
+      },
+      {
+        path: '/rights',
+        component: Rights
+      },
+      {
+        path: '/roles',
+        component: Roles
+      },
     ]
-  },
+  }
 ]
 
 const router = new VueRouter({
