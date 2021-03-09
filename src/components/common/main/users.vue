@@ -84,7 +84,11 @@
               placement="top"
               :enterable="false"
             >
-              <el-button type="warning" icon="el-icon-setting" @click="setRole(scope.row)"></el-button>
+              <el-button
+                type="warning"
+                icon="el-icon-setting"
+                @click="setRole(scope.row)"
+              ></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -175,18 +179,25 @@
         title="提示"
         :visible.sync="setRoleDialogVisible"
         width="50%"
-        @close="selectedRoleId=''">
+        @close="selectedRoleId = ''"
+      >
         <div>
-          <p>当前的用户：{{userInfo.username}}</p>
-          <p>当前的角色：{{userInfo.role_name}}</p>
-          <p>分配新角色：
+          <p>当前的用户：{{ userInfo.username }}</p>
+          <p>当前的角色：{{ userInfo.role_name }}</p>
+          <p>
+            分配新角色：
             <template>
-              <el-select v-model="selectedRoleId" clearable placeholder="请选择">
+              <el-select
+                v-model="selectedRoleId"
+                clearable
+                placeholder="请选择"
+              >
                 <el-option
                   v-for="item in rolesList"
                   :key="item.id"
                   :label="item.roleName"
-                  :value="item.id">
+                  :value="item.id"
+                >
                 </el-option>
               </el-select>
             </template>
@@ -307,7 +318,7 @@ export default {
       // 需要被分配角色的用户信息
       userInfo: {},
       rolesList: [],
-      selectedRoleId: '',
+      selectedRoleId: ''
     }
   },
   created() {
@@ -448,37 +459,37 @@ export default {
         })
       console.log(res)
     },
-    async setRole(userInfo){
+    async setRole(userInfo) {
       this.userInfo = userInfo
       // 在展示对话框之前，获取所有角色的列表
-      await this.$http.get('roles')
-      .then(res => {
-        if(res.data.meta.status !== 200){
+      await this.$http.get('roles').then(res => {
+        if (res.data.meta.status !== 200) {
           return this.$message.error(`角色信息获取失败，${res.data.meta.msg}`)
         }
         // 将角色列表数据保存到本地
-        this.rolesList = res.data.data;
+        this.rolesList = res.data.data
       })
       this.setRoleDialogVisible = true
     },
-    async saveRoleInfo(){
-      if(!this.selectedRoleId){
+    async saveRoleInfo() {
+      if (!this.selectedRoleId) {
         return this.$message.error('请选择要分配的角色！')
       }
-      await this.$http.put(`users/${this.userInfo.id}/role`,{
-        rid: this.selectedRoleId
-      })
-      .then(res => {
-        if(res.data.meta.status !== 200){
-          return this.$message.error(`角色分配失败，${res.data.meta.msg}`)
-        }
-        this.$message.success(res.data.meta.msg)
-        this.getUserList()
-        this.setRoleDialogVisible = false
-      })
-      .catch(err => {
-        return this.$message.error(err.data.meta.msg)
-      })
+      await this.$http
+        .put(`users/${this.userInfo.id}/role`, {
+          rid: this.selectedRoleId
+        })
+        .then(res => {
+          if (res.data.meta.status !== 200) {
+            return this.$message.error(`角色分配失败，${res.data.meta.msg}`)
+          }
+          this.$message.success(res.data.meta.msg)
+          this.getUserList()
+          this.setRoleDialogVisible = false
+        })
+        .catch(err => {
+          return this.$message.error(err.data.meta.msg)
+        })
     }
   }
 }

@@ -20,7 +20,7 @@ export default {
   name: 'Home',
   data() {
     return {
-      menuList: [],
+      menuList: []
     }
   },
   components: {
@@ -29,32 +29,33 @@ export default {
     Mains
   },
   created() {
-    this.getMenuList();
+    this.getMenuList()
   },
   methods: {
     // 获取所有的菜单
-    async getMenuList(){
-      await this.$http.get('menus')
-      .then(res => {
-        // console.log(res.data)
-        if(res.data.meta.status !== 200){
-          return this.$message.err(res.data.meta.msg);
-        }
-        this.menuList = res.data.data;
-        console.log(this.menuList);
-      })
-      .catch(err => {
-        console.log(err);
-      })
+    async getMenuList() {
+      await this.$http
+        .get('menus')
+        .then(res => {
+          // console.log(res.data)
+          if (res.data.meta.status !== 200) {
+            return this.$message.err(res.data.meta.msg)
+          }
+          this.menuList = res.data.data
+          console.log(this.menuList)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
-  },
+  }
 }
 </script>
 <style lang="scss" scoped>
 .home_container {
   height: 100%;
 }
-.mains-container{
+.mains-container {
   overflow: hidden;
 }
 </style>

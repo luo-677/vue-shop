@@ -71,8 +71,10 @@
           <template v-slot="scope">
             <el-button type="primary" icon="el-icon-edit">编辑</el-button>
             <el-button type="danger" icon="el-icon-delete">删除</el-button>
-            <el-button type="warning" icon="el-icon-setting"
-            @click="showSetRightDialog(scope.row)"
+            <el-button
+              type="warning"
+              icon="el-icon-setting"
+              @click="showSetRightDialog(scope.row)"
               >分配权限</el-button
             >
           </template>
@@ -85,16 +87,17 @@
       title="分配权限"
       :visible.sync="setRightDialogVisible"
       width="50%"
-      @close="defkeys=[]">
+      @close="defkeys = []"
+    >
       <!-- 树形控件 -->
-      <el-tree 
-      :data="rightsList" 
-      :props="treeProps"
-      show-checkbox
-      node-key="id"
-      default-expand-all
-      :default-checked-keys="defkeys"
-      ref="treeRef"
+      <el-tree
+        :data="rightsList"
+        :props="treeProps"
+        show-checkbox
+        node-key="id"
+        default-expand-all
+        :default-checked-keys="defkeys"
+        ref="treeRef"
       ></el-tree>
       <span slot="footer" class="dialog-footer">
         <el-button @click="setRightDialogVisible = false">取 消</el-button>
@@ -164,11 +167,10 @@ export default {
           this.$message.info('已取消删除')
         })
     },
-    async showSetRightDialog(role){
+    async showSetRightDialog(role) {
       this.roleId = role.id
-      await this.$http.get('rights/tree')
-      .then(res => {
-        if(res.data.meta.status !== 200){
+      await this.$http.get('rights/tree').then(res => {
+        if (res.data.meta.status !== 200) {
           return this.$message.error('获取权限数据失败')
         }
         // 把获取到的权限数据保存到data中
@@ -178,12 +180,11 @@ export default {
         this.getLeafKeys(role, this.defkeys)
         this.setRightDialogVisible = true
       })
-
     },
     // 通过递归的形式，获取角色下所有三级权限的id，并保存到defKeys数组中
-    getLeafKeys(node, arr){
+    getLeafKeys(node, arr) {
       // 如果当前node节点不包含children属性，则为三级节点
-      if(!node.children){
+      if (!node.children) {
         return arr.push(node.id)
       }
       // 递归函数，进行逐层判断
@@ -192,7 +193,7 @@ export default {
       })
     },
     // 点击为角色分配权限
-    async allotRights(){
+    async allotRights() {
       // console.log('在这里',this.$refs.treeRef.getCheckedKeys())
       const keys = [
         ...this.$refs.treeRef.getCheckedKeys(),
@@ -201,18 +202,21 @@ export default {
       // console.log(keys)
       const idStr = keys.join(',')
       // console.log(idStr)
-      await this.$http.post(`roles/${this.roleId}/rights`,{
-        rids: idStr
-      }).then(res => {
-        if(res.data.meta.status !== 200){
-          this.$message.error(`更新失败，${res.data.meta.msg}`)
-        }
-        this.$message.success(`${res.data.meta.msg}`)
-        this.getRolesList()
-        this.setRightDialogVisible = false
-      }).catch(err => {
-        this.$message.error(`${err.data.meta.msg}`)
-      })
+      await this.$http
+        .post(`roles/${this.roleId}/rights`, {
+          rids: idStr
+        })
+        .then(res => {
+          if (res.data.meta.status !== 200) {
+            this.$message.error(`更新失败，${res.data.meta.msg}`)
+          }
+          this.$message.success(`${res.data.meta.msg}`)
+          this.getRolesList()
+          this.setRightDialogVisible = false
+        })
+        .catch(err => {
+          this.$message.error(`${err.data.meta.msg}`)
+        })
     }
   }
 }
@@ -228,7 +232,7 @@ export default {
 .bdbottom {
   border-bottom: 1px solid #eee;
 }
-.el-table{
+.el-table {
   margin-top: 14px;
 }
 </style>
