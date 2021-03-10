@@ -35,7 +35,8 @@ import {
   Tree,
   Select,
   Option,
-  Cascader
+  Cascader,
+  Alert
 } from 'element-ui'
 
 import axios from 'axios'
@@ -84,6 +85,7 @@ Vue.use(Tree)
 Vue.use(Select)
 Vue.use(Option)
 Vue.use(Cascader)
+Vue.use(Alert)
 // 这玩意不需要使用use函数进行激活
 // Vue.use(MessageBox)
 
