@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import '../src/assets/css/global.css'
 import '../src/assets/font/iconfont.css'
+import ZkTable from 'vue-table-with-tree-grid'
 // 使用按需导入，记得在 babel.config.js 中修改配信息
 import {
   Button,
@@ -33,7 +34,8 @@ import {
   Tag,
   Tree,
   Select,
-  Option
+  Option,
+  Cascader
 } from 'element-ui'
 
 import axios from 'axios'
@@ -51,6 +53,9 @@ Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
 
 Vue.config.productionTip = false
+
+Vue.component('tree-table', ZkTable)
+
 // 组件注册需要分开写
 Vue.use(Button)
 Vue.use(Form)
@@ -78,6 +83,7 @@ Vue.use(Tag)
 Vue.use(Tree)
 Vue.use(Select)
 Vue.use(Option)
+Vue.use(Cascader)
 // 这玩意不需要使用use函数进行激活
 // Vue.use(MessageBox)
 
