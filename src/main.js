@@ -36,7 +36,9 @@ import {
   Select,
   Option,
   Cascader,
-  Alert
+  Alert,
+  Tabs,
+  TabPane
 } from 'element-ui'
 
 import axios from 'axios'
@@ -86,6 +88,8 @@ Vue.use(Select)
 Vue.use(Option)
 Vue.use(Cascader)
 Vue.use(Alert)
+Vue.use(Tabs)
+Vue.use(TabPane)
 // 这玩意不需要使用use函数进行激活
 // Vue.use(MessageBox)
 
