@@ -23,3 +23,11 @@ html, body, #app{
     display: flex;
     align-items: center;
 }
+
+.el-steps{
+  margin: 15px 0;
+}
+
+.ql-editor{
+  min-height: 400px;
+}

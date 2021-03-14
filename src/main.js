@@ -5,6 +5,10 @@ import store from './store'
 import '../src/assets/css/global.css'
 import '../src/assets/font/iconfont.css'
 import ZkTable from 'vue-table-with-tree-grid'
+import VueQuillEditor from 'vue-quill-editor'
+import 'quill/dist/quill.core.css' // import styles
+import 'quill/dist/quill.snow.css' // for snow theme
+import 'quill/dist/quill.bubble.css' // for bubble theme
 // 使用按需导入，记得在 babel.config.js 中修改配信息
 import {
   Button,
@@ -38,7 +42,12 @@ import {
   Cascader,
   Alert,
   Tabs,
-  TabPane
+  TabPane,
+  Steps,
+  Step,
+  CheckboxGroup,
+  Checkbox,
+  Upload
 } from 'element-ui'
 
 import axios from 'axios'
@@ -90,6 +99,12 @@ Vue.use(Cascader)
 Vue.use(Alert)
 Vue.use(Tabs)
 Vue.use(TabPane)
+Vue.use(Steps)
+Vue.use(Step)
+Vue.use(CheckboxGroup)
+Vue.use(Checkbox)
+Vue.use(Upload)
+Vue.use(VueQuillEditor /* { default global options } */)
 // 这玩意不需要使用use函数进行激活
 // Vue.use(MessageBox)
 
